@@ -1,8 +1,8 @@
-# ModusToolbox™ Software Training Level 3 – WiFi
+# ModusToolbox™ Software Training Level 3 – Wi-Fi
 
-This is a 3rd level ModusToolbox™ training class. It covers WiFi using PSoC™ 6 any cloud
+This is a 3rd level ModusToolbox™ training class. It covers Wi-Fi using PSoC™ 6 any cloud
 
-The material and examples explain and demonstrate the use of WiFi, sockets, HTTP, MQTT,
+The material and examples explain and demonstrate the use of Wi-Fi, sockets, HTTP, MQTT,
 and low power concepts.
 
 ## Pre-requisites
@@ -22,13 +22,13 @@ and low power concepts.
 
 This class consists of 9 chapters:
 - Chapter 1: Intro - Overall introduction to this course and PSoC™ 6 AnyCloud
-- Chapter 2: WiFi - Overview of the network stack, WiFi, and mDNS
+- Chapter 2: Wi-Fi - Overview of the network stack, Wi-Fi, and mDNS
 - Chapter 3a: Sockets - Introduction to TCP sockets
 - Chapter 3b: Sockets-TLS - Introduction to symmectric/asymmectric encryption and TLS
 - Chapter 4a: Cloud - Introduction to "the cloud". Overview of common application protocols
 - Chapter 4b: Cloud-HTTP - Description of the HTTP protocol and AnyCloud HTTP libraries
 - Chapter 4c: Cloud-MQTT - Description of the MQTT protocol. Interacting with AWS IoT Cloud
-- Chapter 5: Low-Power - Introduction to applying low power concepts to WiFi applications
+- Chapter 5: Low-Power - Introduction to applying low power concepts to Wi-Fi applications
 - Chapter 6: Project - Apply what you have learned in the class to create an IoT thermostat
 
 ## Hardware
