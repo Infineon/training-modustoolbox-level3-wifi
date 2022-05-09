@@ -1,14 +1,13 @@
 /******************************************************************************
-* File Name:   main.c
+* File Name: wifi_config.h
 *
-* Description: This is the source code for the Empty PSoC6 Application
-*              for ModusToolbox.
+* Description: This file contains the configuration macros required for the 
+*              Wi-Fi connection.
 *
 * Related Document: See README.md
 *
-*
 *******************************************************************************
-* (c) 2019-2020, Cypress Semiconductor Corporation. All rights reserved.
+* (c) 2020, Cypress Semiconductor Corporation. All rights reserved.
 *******************************************************************************
 * This software, including source code, documentation and related materials
 * ("Software"), is owned by Cypress Semiconductor Corporation or one of its
@@ -39,63 +38,26 @@
 * indemnify Cypress against all liability.
 *******************************************************************************/
 
-#include "cy_pdl.h"
-#include "cyhal.h"
-#include "cybsp.h"
-#include "cy_retarget_io.h"
-#include "cy_json_parser.h"
-#include "stdlib.h" //atof
+#ifndef WIFI_CONFIG_H_
+#define WIFI_CONFIG_H_
 
-float temperatureValue;
-char  temperatureString[10];
+#include "cy_wcm.h"
 
-/* This function is called during the parsing of the JSON text.  It is called when a
-   complete item is parsed. */
-cy_rslt_t jsonCallback(cy_JSON_object_t *obj_p, void *arg)
-{
-    /* This conditional ensures that the path is state: reported: temperature and the value is a number */
-    if( (obj_p->parent_object != NULL) &&
-        (obj_p->parent_object->parent_object != NULL) &&
-        (strncmp(obj_p->parent_object->parent_object->object_string, "state", strlen("state")) == 0) &&
-        (strncmp(obj_p->parent_object->object_string, "reported", strlen("reported")) == 0) &&
-        (strncmp(obj_p->object_string, "temperature", strlen("temperature")) == 0) &&
-        (obj_p->value_type == JSON_NUMBER_TYPE)
-      )
-    {
-        snprintf(temperatureString, obj_p->value_length+1, "%s", obj_p->value);
-        temperatureValue = atof(temperatureString);
-    }
-    return CY_RSLT_SUCCESS;
-}
+/*******************************************************************************
+* Macros
+********************************************************************************/
+/* SSID of the Wi-Fi Access Point to which the client connects. */
+#define WIFI_SSID                         "MY_WIFI_SSID"
 
+/* Security type of the Wi-Fi access point. See 'cy_wcm_security_t' structure
+ * in "cy_wcm.h" for more details.
+ */
+#define WIFI_SECURITY                     CY_WCM_SECURITY_OPEN
 
-int main(void){
-    cy_rslt_t result;
-    /* Initialize the device and board peripherals */
-    result = cybsp_init();
-    if (result != CY_RSLT_SUCCESS)
-    {
-        CY_ASSERT(0);
-    }
+/* Maximum Wi-Fi re-connection limit. */
+#define MAX_WIFI_CONN_RETRIES             (10u)
 
-    /* Initialize retarget-io to use the debug UART port. */
-	cy_retarget_io_init(CYBSP_DEBUG_UART_TX, CYBSP_DEBUG_UART_RX, CY_RETARGET_IO_BAUDRATE);
+/* Wi-Fi re-connection time interval in milliseconds. */
+#define WIFI_CONN_RETRY_INTERVAL_MS       (2000)
 
-	/* Enable interrupts */
-    __enable_irq();
-
-    // Hard Coded json string
-    const char *jsonString = "{\"state\" : {\"reported\" : {\"temperature\":25.4} } }";
-
-    //Register Callback
-    cy_JSON_parser_register_callback(jsonCallback, NULL);
-    //Parse and print
-    cy_JSON_parser(jsonString, strlen(jsonString));
-    printf("Temperature: %.1f\n", temperatureValue);
-
-
-    for(;;){
-    }
-}
-
-/* [] END OF FILE */
+#endif /* WIFI_CONFIG_H_ */

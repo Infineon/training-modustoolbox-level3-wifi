@@ -56,41 +56,48 @@
 #include "cy_wcm.h"
 #include "stdlib.h"
 
-char *currentSSID = WIFI_SSID;
-char *currentPswd = WIFI_PASSWORD;
-cy_wcm_security_t currentSecurity = WIFI_SECURITY;
+char *primarySSID = WIFI_SSID;
+char *primaryPswd = WIFI_PASSWORD;
+cy_wcm_security_t primarySecurity = WIFI_SECURITY;
 
 char *alternateSSID = WIFI_SSID_ALT;
 char *alternatePswd = WIFI_PASSWORD_ALT;
 cy_wcm_security_t alternateSecurity = WIFI_SECURITY_ALT;
 
+cy_wcm_connect_params_t connect_param;
 bool connected;
 
 void printWiFi(){
 	char *wifiSecurity;
-	if(currentSecurity == CY_WCM_SECURITY_WPA2_AES_PSK){
-		wifiSecurity = "WPA2_AES_PSK";
+	if(connected){
+		if(connect_param.ap_credentials.security == CY_WCM_SECURITY_WPA2_AES_PSK){
+			wifiSecurity = "WPA2_AES_PSK";
+		}
+		else if(connect_param.ap_credentials.security == CY_WCM_SECURITY_OPEN){
+			wifiSecurity = "Open";
+		}
+		else
+		{
+			wifiSecurity = "Other";
+		}
+		printf("SSID: %s\nSecurity: %s\nPassword: %s\n", connect_param.ap_credentials.SSID, wifiSecurity, connect_param.ap_credentials.password);
 	}
-	else if(currentSecurity == CY_WCM_SECURITY_OPEN){
-		wifiSecurity = "Open";
+	else{
+		printf("Not currently connected!\n");
 	}
-	else
-	{
-		wifiSecurity = "Other";
-	}
-	printf("SSID: %s\nSecurity: %s\nPassword: %s\n", currentSSID, wifiSecurity, currentPswd);
 }
 
 void changeWiFi(char *ssid, char *passPhrase, cy_wcm_security_t security){
 	cy_rslt_t result;
 
-	result = cy_wcm_disconnect_ap();
-	if (result != CY_RSLT_SUCCESS){
-	        CY_ASSERT(0);
+	if(connected){
+		result = cy_wcm_disconnect_ap();
+		if (result != CY_RSLT_SUCCESS){
+				CY_ASSERT(0);
+		}
+		printf("Disconnected from WiFi\n");
 	}
-	printf("Disconnected from WiFi\n");
 
-	cy_wcm_connect_params_t connect_param;
 	cy_wcm_ip_address_t ip_address;
 	uint32_t retry_count;
 
@@ -139,11 +146,11 @@ void changeWiFi(char *ssid, char *passPhrase, cy_wcm_security_t security){
 					(uint8_t)(connect_param.static_ip_settings->gateway.ip.v4 >> 24));
 
 			// Print hostname lookup
-			cy_socket_ip_address_t cypresssemiconductorcoIP;
-			cy_socket_gethostbyname("www.cypresssemiconductorco.com",CY_SOCKET_IP_VER_V4, &cypresssemiconductorcoIP);
-			printf("www.cypresssemiconductorco.com IP Address: %d.%d.%d.%d\n", (uint8_t)cypresssemiconductorcoIP.ip.v4,
-					(uint8_t)(cypresssemiconductorcoIP.ip.v4 >> 8), (uint8_t)(cypresssemiconductorcoIP.ip.v4 >> 16),
-					(uint8_t)(cypresssemiconductorcoIP.ip.v4 >> 24));
+			cy_socket_ip_address_t infineonIP;
+			cy_socket_gethostbyname("www.infineon.com",CY_SOCKET_IP_VER_V4, &infineonIP);
+			printf("www.infineon.com IP Address: %d.%d.%d.%d\n", (uint8_t)infineonIP.ip.v4,
+					(uint8_t)(infineonIP.ip.v4 >> 8), (uint8_t)(infineonIP.ip.v4 >> 16),
+					(uint8_t)(infineonIP.ip.v4 >> 24));
 
 			// Print MAC Address
 			cy_wcm_mac_t MAC_addr;

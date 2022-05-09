@@ -1,12 +1,14 @@
 /******************************************************************************
-* File Name:   pot_task.h
+* File Name:   main.c
 *
-* Description: This file is the public interface of pot_task.c
+* Description: This is the source code for the Empty PSoC6 Application
+*              for ModusToolbox.
 *
 * Related Document: See README.md
 *
+*
 *******************************************************************************
-* (c) 2020, Cypress Semiconductor Corporation. All rights reserved.
+* (c) 2019-2020, Cypress Semiconductor Corporation. All rights reserved.
 *******************************************************************************
 * This software, including source code, documentation and related materials
 * ("Software"), is owned by Cypress Semiconductor Corporation or one of its
@@ -36,34 +38,64 @@
 * system or application assumes all risk of such use and in doing so agrees to
 * indemnify Cypress against all liability.
 *******************************************************************************/
-#ifndef POT_TASK_H_
-#define POT_TASK_H_
 
-// Middleware Headers
-#include "FreeRTOS.h"
-#include "task.h"
+#include "cy_pdl.h"
+#include "cyhal.h"
+#include "cybsp.h"
+#include "cy_retarget_io.h"
+#include "cy_json_parser.h"
+#include "stdlib.h" //atof
 
-/*******************************************************************************
-* Macros
-********************************************************************************/
-#define POT_TASK_PRIORITY               	  (1)
-#define POT_TASK_STACK_SIZE             (1024 * 1)
+float temperatureValue;
+char  temperatureString[10];
 
-/*******************************************************************************
-* Extern Variables
-********************************************************************************/
-// Defined in pot_task.c
-extern TaskHandle_t pot_task_handle;
-// Defined in publisher_task.c
-extern TaskHandle_t publisher_task_handle;
-// Defined in display_task.c
-extern TaskHandle_t display_task_handle;
+/* This function is called during the parsing of the JSON text.  It is called when a
+   complete item is parsed. */
+cy_rslt_t jsonCallback(cy_JSON_object_t *obj_p, void *arg)
+{
+    /* This conditional ensures that the path is state: reported: temperature and the value is a number */
+    if( (obj_p->parent_object != NULL) &&
+        (obj_p->parent_object->parent_object != NULL) &&
+        (strncmp(obj_p->parent_object->parent_object->object_string, "state", strlen("state")) == 0) &&
+        (strncmp(obj_p->parent_object->object_string, "reported", strlen("reported")) == 0) &&
+        (strncmp(obj_p->object_string, "temperature", strlen("temperature")) == 0) &&
+        (obj_p->value_type == JSON_FLOAT_TYPE)
+      )
+    {
+        snprintf(temperatureString, obj_p->value_length+1, "%s", obj_p->value);
+        temperatureValue = atof(temperatureString);
+    }
+    return CY_RSLT_SUCCESS;
+}
 
-/*******************************************************************************
-* Function Prototypes
-********************************************************************************/
-void pot_task(void *pvParameters);
 
-#endif /* POT_TASK_H_ */
+int main(void){
+    cy_rslt_t result;
+    /* Initialize the device and board peripherals */
+    result = cybsp_init();
+    if (result != CY_RSLT_SUCCESS)
+    {
+        CY_ASSERT(0);
+    }
+
+    /* Initialize retarget-io to use the debug UART port. */
+	cy_retarget_io_init(CYBSP_DEBUG_UART_TX, CYBSP_DEBUG_UART_RX, CY_RETARGET_IO_BAUDRATE);
+
+	/* Enable interrupts */
+    __enable_irq();
+
+    // Hard Coded json string
+    const char *jsonString = "{\"state\" : {\"reported\" : {\"temperature\":25.4} } }";
+
+    //Register Callback
+    cy_JSON_parser_register_callback(jsonCallback, NULL);
+    //Parse and print
+    cy_JSON_parser(jsonString, strlen(jsonString));
+    printf("Temperature: %.1f\n", temperatureValue);
+
+
+    for(;;){
+    }
+}
 
 /* [] END OF FILE */

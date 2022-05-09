@@ -16,7 +16,8 @@ and low power concepts.
 - *Projects*:   This directory contains solutions to exercises.
 - *Templates*:  This directory contains template starter projects for some exercises.
 - *Scripts:*    This directory contains a Python script to help format AWS certificates and keys for use in an application.
-- *ClassCerts:* This direcotry contains certificats and keys for use with the secure AWEP server
+- *ClassCerts:* This direcotry contains certificats and keys for use with the secure AWEP server.
+- *Libraries:*	This directory contains libraries used in the course.
 
 ## Manual Chapters
 

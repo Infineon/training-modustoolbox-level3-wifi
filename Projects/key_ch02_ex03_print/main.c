@@ -112,11 +112,11 @@ void wifi_connect(void *arg){
 					(uint8_t)(connect_param.static_ip_settings->gateway.ip.v4 >> 24));
 
 			// Print hostname lookup
-			cy_socket_ip_address_t cypresssemiconductorcoIP;
-			cy_socket_gethostbyname("www.cypresssemiconductorco.com",CY_SOCKET_IP_VER_V4, &cypresssemiconductorcoIP);
-			printf("www.cypresssemiconductorco.com IP Address: %d.%d.%d.%d\n", (uint8_t)cypresssemiconductorcoIP.ip.v4,
-					(uint8_t)(cypresssemiconductorcoIP.ip.v4 >> 8), (uint8_t)(cypresssemiconductorcoIP.ip.v4 >> 16),
-					(uint8_t)(cypresssemiconductorcoIP.ip.v4 >> 24));
+			cy_socket_ip_address_t infineonIP;
+			cy_socket_gethostbyname("www.infineon.com",CY_SOCKET_IP_VER_V4, &infineonIP);
+			printf("www.infineon.com IP Address: %d.%d.%d.%d\n", (uint8_t)infineonIP.ip.v4,
+					(uint8_t)(infineonIP.ip.v4 >> 8), (uint8_t)(infineonIP.ip.v4 >> 16),
+					(uint8_t)(infineonIP.ip.v4 >> 24));
 
 			// Print MAC Address
 			cy_wcm_mac_t MAC_addr;
