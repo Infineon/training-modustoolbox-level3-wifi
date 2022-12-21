@@ -165,7 +165,7 @@ void http_client_task(void *arg){
 
 	// Content length header is automatically added!
 
-	result = cy_http_client_write_header(clientHandle, &request, &header, num_header);
+	result = cy_http_client_write_header(clientHandle, &request, header, num_header);
 	if(result != CY_RSLT_SUCCESS){
 		printf("HTTP Client Header Write Failed!\n");
 		CY_ASSERT(0);

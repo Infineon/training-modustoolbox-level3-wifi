@@ -56,7 +56,8 @@
 #include "cy_mqtt_api.h"
 #include "semphr.h"
 #include "cy_wcm.h"
-#include "cy_lwip.h"
+#include "cy_network_mw_core.h"
+#include "cy_nw_helper.h"
 
 /* Configuration file for MQTT client */
 #include "mqtt_client_config.h"
@@ -97,6 +98,9 @@ cy_mqtt_publish_info_t publish_info =
     .dup = false
 };
 
+/* Variable to hold string representation of the IP address (dot separated) */
+static char ipAddrString[16];
+
 // Defined in main.c
 extern int actualTemp, setTemp;
 extern char *mode;
@@ -132,8 +136,9 @@ void publisher_task(void *pvParameters){
 
     // Send my IP address to the cloud
     cy_wcm_ip_address_t myIP = {0};
-    cy_wcm_get_ip_addr(CY_WCM_INTERFACE_TYPE_STA, &myIP, 0);
-    sprintf(payloadString, "{\"state\":{\"reported\":{\"IP Address\":\"%s\"}}}", ip4addr_ntoa((const ip4_addr_t *) &myIP.ip.v4));
+    cy_wcm_get_ip_addr(CY_WCM_INTERFACE_TYPE_STA, &myIP);
+	cy_nw_ntoa((cy_nw_ip_address_t *)&(myIP.ip), ipAddrString);
+    sprintf(payloadString, "{\"state\":{\"reported\":{\"IP Address\":\"%s\"}}}", ipAddrString);
     publish(payloadString);
 
     while(true){

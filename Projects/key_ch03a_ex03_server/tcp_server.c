@@ -63,7 +63,7 @@
 #include "tcp_server.h"
 
 /* lwIP related header files. */
-#include "cy_lwip.h"
+#include "cy_network_mw_core.h"
 
 /* Standard C header files */
 #include <inttypes.h>
@@ -73,7 +73,6 @@
 
 /* mDNS */
 #include "mdns.h"
-#include "cy_lwip.h"
 
 /*******************************************************************************
 * Macros
@@ -88,8 +87,8 @@
  * Note: Maximum length of the Wi-Fi SSID and password is set to
  * CY_WCM_MAX_SSID_LEN and CY_WCM_MAX_PASSPHRASE_LEN as defined in cy_wcm.h file.
  */
-#define WIFI_SSID                             "ssid"
-#define WIFI_PASSWORD                         "psswd"
+#define WIFI_SSID                             "SSID"
+#define WIFI_PASSWORD                         "PSSWD"
 
 /* Security type of the Wi-Fi access point. See 'cy_wcm_security_t' structure
  * in "cy_wcm.h" for more details.
@@ -166,7 +165,7 @@ void tcp_server_task(void *arg)
 	mdns_resp_init();
 	/* IP of my device */
 	struct netif *myNetif;
-	myNetif = cy_lwip_get_interface(CY_LWIP_STA_NW_INTERFACE);
+	myNetif = cy_network_get_nw_interface(CY_NETWORK_WIFI_STA_INTERFACE,0);
 	error = mdns_resp_add_netif(myNetif, "awep", 100);
 	if(error == ERR_OK){
 		printf("mDNS responder initialized successfully.\n");

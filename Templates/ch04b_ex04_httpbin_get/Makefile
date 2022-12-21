@@ -28,6 +28,14 @@
 # Basic Configuration
 ################################################################################
 
+#Type of MTB Makefile Options include:
+#
+#COMBINED    -- Top Level Makefile usually for single standalone application
+#APPLICATION -- Top Level Common Makefile usually for multi-project in application
+#PROJECT     -- Project Makefile for each project under Application
+#
+MTB_TYPE=COMBINED
+
 # Target board/hardware (BSP).
 # To change the target, it is recommended to use the Library manager 
 # ('make modlibs' from command line), which will also update Eclipse IDE launch 
@@ -79,7 +87,7 @@ VERBOSE=
 # ... then code in directories named COMPONENT_foo and COMPONENT_bar will be
 # added to the build
 #
-COMPONENTS=FREERTOS MBEDTLS LWIP SECURE_SOCKETS 43012 PSOC6HAL
+COMPONENTS=FREERTOS MBEDTLS LWIP SECURE_SOCKETS PSOC6HAL
 
 # Like COMPONENTS, but disable optional code that was enabled by default.
 DISABLE_COMPONENTS=
@@ -98,7 +106,7 @@ INCLUDES=
 DEFINES=
 DEFINES+=ENABLE_HTTP_CLIENT_LOGS
 DEFINES+=HTTP_MAX_RESPONSE_HEADERS_SIZE_BYTES=2048
-DEFINES += HTTP_USER_AGENT_VALUE="\"anycloud-http-client\""
+DEFINES += HTTP_USER_AGENT_VALUE="\"mtb-http-client\""
 DEFINES += HTTP_DO_NOT_USE_CUSTOM_CONFIG
 DEFINES += MQTT_DO_NOT_USE_CUSTOM_CONFIG
 DEFINES+=MBEDTLS_USER_CONFIG_FILE='"mbedtls_user_config.h"'

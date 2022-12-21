@@ -120,7 +120,7 @@ void wifi_connect(void *arg){
 
 			// Print MAC Address
 			cy_wcm_mac_t MAC_addr;
-			cy_wcm_get_mac_addr(CY_WCM_INTERFACE_TYPE_STA, &MAC_addr, 1);
+			cy_wcm_get_mac_addr(CY_WCM_INTERFACE_TYPE_STA, &MAC_addr);
 			printf("MAC Address: %X:%X:%X:%X:%X:%X\n", MAC_addr[0], MAC_addr[1], MAC_addr[2], MAC_addr[3], MAC_addr[4], MAC_addr[5]);
 			break;
 		}

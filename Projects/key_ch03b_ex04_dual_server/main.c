@@ -52,7 +52,10 @@
 /* TCP server task header file. */
 #include "tcp_server.h"
 
-/* Cypress secure socket header file */
+/* network MW core header file */
+#include "cy_network_mw_core.h"
+
+/* Secure socket header file */
 #include "cy_secure_sockets.h"
 #include "cy_tls.h"
 
@@ -62,7 +65,6 @@
 
 /* mDNS */
 #include "mdns.h"
-#include "cy_lwip.h"
 
 /*******************************************************************************
 * Macros
@@ -202,7 +204,7 @@ void connect_to_wifi_ap_task(void *arg){
 			mdns_resp_init();
 			/* IP of my device */
 			struct netif *myNetif;
-			myNetif = cy_lwip_get_interface(CY_LWIP_STA_NW_INTERFACE);
+			myNetif = cy_network_get_nw_interface(CY_NETWORK_WIFI_STA_INTERFACE, 0);
 			error = mdns_resp_add_netif(myNetif, "awep", 100);
 			if(error == ERR_OK){
 				printf("mDNS responder initialized successfully.\n");

@@ -68,7 +68,7 @@
 #define BUFFERSIZE							(2048 * 2)
 #define SENDRECEIVETIMEOUT					(5000)
 #define ANYTHINGRESOURCE					"/anything"
-#define REQUEST_BODY						"{\"AnyCloud\":\"yes\"}"
+#define REQUEST_BODY						"{\"having_fun\":\"yes\"}"
 #define REQUEST_BODY_LENGTH					( sizeof( REQUEST_BODY ) - 1 )
 
 /*******************************************************************************

@@ -31,6 +31,20 @@
 
 
 /**
+ * Compiling Mbed TLS for Cortex-M0/0+/1/M23 cores with optimization enabled and on ARMC6 compiler results in errors. 
+ * These cores lack the required full Thumb-2 support, causing the inline assembly to require more registers than available.
+ * The workaround is to use 'MULADDC_CANNOT_USE_R7' compilation flag, or without optimization flag, 
+ * but note that this will compile without the assmebly optimization.
+ *
+ * To read more about this issue, refer to https://github.com/ARMmbed/mbed-os/pull/14529/commits/86e7bc559b0d1a055bf84ea9249763d2349fb6e8
+ */
+
+#if defined(COMPONENT_CM0P) && defined(COMPONENT_ARM)
+#define MULADDC_CANNOT_USE_R7
+#endif
+
+
+/**
  * \def MBEDTLS_HAVE_TIME_DATE
  *
  * System has time.h, time(), and an implementation for
@@ -709,5 +723,150 @@
  *      MBEDTLS_TLS_RSA_PSK_WITH_RC4_128_SHA
  */
 #undef MBEDTLS_KEY_EXCHANGE_RSA_PSK_ENABLED
+
+/**
+ * \def MBEDTLS_PSA_CRYPTO_C
+ *
+ * Enable the Platform Security Architecture cryptography API.
+ *
+ * \warning The PSA Crypto API is still beta status. While you're welcome to
+ * experiment using it, incompatible API changes are still possible, and some
+ * parts may not have reached the same quality as the rest of Mbed TLS yet.
+ *
+ * Module:  library/psa_crypto.c
+ *
+ * Requires: MBEDTLS_CTR_DRBG_C, MBEDTLS_ENTROPY_C
+ *
+ */
+#undef MBEDTLS_PSA_CRYPTO_C
+
+/**
+ * \def MBEDTLS_PSA_CRYPTO_STORAGE_C
+ *
+ * Enable the Platform Security Architecture persistent key storage.
+ *
+ * Module:  library/psa_crypto_storage.c
+ *
+ * Requires: MBEDTLS_PSA_CRYPTO_C,
+ *           either MBEDTLS_PSA_ITS_FILE_C or a native implementation of
+ *           the PSA ITS interface
+ */
+#undef MBEDTLS_PSA_CRYPTO_STORAGE_C
+
+/**
+ * \def MBEDTLS_PSA_ITS_FILE_C
+ *
+ * Enable the emulation of the Platform Security Architecture
+ * Internal Trusted Storage (PSA ITS) over files.
+ *
+ * Module:  library/psa_its_file.c
+ *
+ * Requires: MBEDTLS_FS_IO
+ */
+#undef MBEDTLS_PSA_ITS_FILE_C
+
+/**
+ * \def MBEDTLS_SSL_KEEP_PEER_CERTIFICATE
+ *
+ * This option controls the availability of the API mbedtls_ssl_get_peer_cert()
+ * giving access to the peer's certificate after completion of the handshake.
+ *
+ * Unless you need mbedtls_ssl_peer_cert() in your application, it is
+ * recommended to disable this option for reduced RAM usage.
+ *
+ * \note If this option is disabled, mbedtls_ssl_get_peer_cert() is still
+ *       defined, but always returns \c NULL.
+ *
+ * \note This option has no influence on the protection against the
+ *       triple handshake attack. Even if it is disabled, Mbed TLS will
+ *       still ensure that certificates do not change during renegotiation,
+ *       for exaple by keeping a hash of the peer's certificate.
+ *
+ * Comment this macro to disable storing the peer's certificate
+ * after the handshake.
+ */
+#undef MBEDTLS_SSL_KEEP_PEER_CERTIFICATE
+
+/**
+ * \def MBEDTLS_DEPRECATED_REMOVED
+ *
+ * Remove deprecated functions and features so that they generate an error if
+ * used. Functionality deprecated in one version will usually be removed in the
+ * next version. You can enable this to help you prepare the transition to a
+ * new major version by making sure your code is not using this functionality.
+ *
+ * Uncomment to get errors on using deprecated functions and features.
+ */
+#define MBEDTLS_DEPRECATED_REMOVED
+
+/**
+ * \def Enable MBEDTLS debug logs
+ *
+ * MBEDTLS_VERBOSE values:
+ * 0 No debug      - No logs are printed on console
+ * 1 Error         - Error messages are printed on console
+ * 2 State change  - State level change logs are printed on console
+ * 3 Informational - Informational logs printed on console
+ * 4 Verbose       - All the logs are printed on console
+ */
+#define MBEDTLS_VERBOSE 0
+
+/**
+ * \def Enable alternate crypto implementations to use the hardware
+ *      acceleration. Include The hardware acceleration module's (cy-mbedtls-acceleration)
+ *      header file to enable the supported ALT configurations.
+ */
+#ifndef DISABLE_MBEDTLS_ACCELERATION
+#include "mbedtls_alt_config.h"
+
+/**
+ * The cy-mbedtls-acceleration module supports only DP_SECP192R1,
+ * SECP224R1, SECP256R1, SECP384R1 and SECP521R1 curves. If any
+ * other curve is enabled, need to disable the MBEDTLS_ECP_ALT.
+ */
+#ifdef MBEDTLS_ECP_DP_SECP192K1_ENABLED
+#undef MBEDTLS_ECP_ALT
+#undef MBEDTLS_ECDH_GEN_PUBLIC_ALT
+#undef MBEDTLS_ECDSA_SIGN_ALT
+#undef MBEDTLS_ECDSA_VERIFY_ALT
+#endif
+#ifdef MBEDTLS_ECP_DP_SECP224K1_ENABLED
+#undef MBEDTLS_ECP_ALT
+#undef MBEDTLS_ECDH_GEN_PUBLIC_ALT
+#undef MBEDTLS_ECDSA_SIGN_ALT
+#undef MBEDTLS_ECDSA_VERIFY_ALT
+#endif
+#ifdef MBEDTLS_ECP_DP_SECP256K1_ENABLED
+#undef MBEDTLS_ECP_ALT
+#undef MBEDTLS_ECDH_GEN_PUBLIC_ALT
+#undef MBEDTLS_ECDSA_SIGN_ALT
+#undef MBEDTLS_ECDSA_VERIFY_ALT
+#endif
+#ifdef MBEDTLS_ECP_DP_BP256R1_ENABLED
+#undef MBEDTLS_ECP_ALT
+#undef MBEDTLS_ECDH_GEN_PUBLIC_ALT
+#undef MBEDTLS_ECDSA_SIGN_ALT
+#undef MBEDTLS_ECDSA_VERIFY_ALT
+#endif
+#ifdef MBEDTLS_ECP_DP_BP384R1_ENABLED
+#undef MBEDTLS_ECP_ALT
+#undef MBEDTLS_ECDH_GEN_PUBLIC_ALT
+#undef MBEDTLS_ECDSA_SIGN_ALT
+#undef MBEDTLS_ECDSA_VERIFY_ALT
+#endif
+#ifdef MBEDTLS_ECP_DP_BP512R1_ENABLED
+#undef MBEDTLS_ECP_ALT
+#undef MBEDTLS_ECDH_GEN_PUBLIC_ALT
+#undef MBEDTLS_ECDSA_SIGN_ALT
+#undef MBEDTLS_ECDSA_VERIFY_ALT
+#endif
+#ifdef MBEDTLS_ECP_DP_CURVE25519_ENABLED
+#undef MBEDTLS_ECP_ALT
+#undef MBEDTLS_ECDH_GEN_PUBLIC_ALT
+#undef MBEDTLS_ECDSA_SIGN_ALT
+#undef MBEDTLS_ECDSA_VERIFY_ALT
+#endif
+
+#endif /* DISABLE_MBEDTLS_ACCELERATION */
 
 #endif /* MBEDTLS_USER_CONFIG_HEADER */

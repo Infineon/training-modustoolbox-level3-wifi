@@ -63,7 +63,8 @@
 /* TCP client task header file. */
 #include "tcp_client.h"
 
-#include "cy_lwip.h"
+#include "cy_network_mw_core.h"
+#include "cy_nw_helper.h"
 
 /* Standard C header files */
 #include <inttypes.h>
@@ -142,6 +143,9 @@ bool led_state = CYBSP_LED_STATE_OFF;
 
 /* TCP server task handle. */
 extern TaskHandle_t client_task_handle;
+
+/* Variable to hold string representation of the IP address (dot separated) */
+char ipAddrString[16];
 
 /* var for mac address checksum */
 uint16_t mac_checksum;
@@ -229,9 +233,9 @@ void tcp_client_task(void *arg)
         /* Connect to the TCP server. If the connection fails, retry
          * to connect to the server for MAX_TCP_SERVER_CONN_RETRIES times.
          */
+        cy_nw_ntoa((cy_nw_ip_address_t *)&(tcp_server_address.ip_address), ipAddrString);
         printf("Connecting to TCP Server (IP Address: %s, Port: %d)\n\n",
-                      ip4addr_ntoa((const ip4_addr_t *)&tcp_server_address.ip_address.ip.v4),
-                      TCP_SERVER_PORT);
+        		ipAddrString, TCP_SERVER_PORT);
         result = connect_to_tcp_server(tcp_server_address);
         if(result != CY_RSLT_SUCCESS)
         {
@@ -321,13 +325,12 @@ cy_rslt_t connect_to_wifi_ap(void)
 
         if(result == CY_RSLT_SUCCESS)
         {
-            printf("Successfully connected to Wi-Fi network '%s'.\n",
-                                wifi_conn_param.ap_credentials.SSID);
-            printf("IP Address Assigned: %s\n",
-                    ip4addr_ntoa((const ip4_addr_t *)&ip_address.ip.v4));
+            printf("Successfully connected to Wi-Fi network '%s'.\n", wifi_conn_param.ap_credentials.SSID);
+            cy_nw_ntoa((cy_nw_ip_address_t *)&(ip_address), ipAddrString);
+            printf("IP Address Assigned: %s\n", ipAddrString);
 
             cy_wcm_mac_t MAC_addr;
-			cy_wcm_get_mac_addr(CY_WCM_INTERFACE_TYPE_STA, &MAC_addr, 1);
+			cy_wcm_get_mac_addr(CY_WCM_INTERFACE_TYPE_STA, &MAC_addr);
 			mac_checksum = MAC_addr[0] +  MAC_addr[1] +  MAC_addr[2] +  MAC_addr[3] +  MAC_addr[4] +  MAC_addr[5];
             return result;
         }

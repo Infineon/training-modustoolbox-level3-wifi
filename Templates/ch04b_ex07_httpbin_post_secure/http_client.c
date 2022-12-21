@@ -68,7 +68,7 @@
 #define BUFFERSIZE							(2048 * 2)
 #define SENDRECEIVETIMEOUT					(5000)
 #define ANYTHINGRESOURCE					"/anything"
-#define REQUEST_BODY						"{\"AnyCloud\":\"yes\"}"
+#define REQUEST_BODY						"{\"having_fun\":\"yes\"}"
 #define REQUEST_BODY_LENGTH					( sizeof( REQUEST_BODY ) - 1 )
 
 /*******************************************************************************
@@ -171,7 +171,7 @@ void http_client_task(void *arg){
 	header[1].value_len = strlen("application/json");
 	// Content length header is automatically added!
 
-	result = cy_http_client_write_header(clientHandle, &request, &header, num_header);
+	result = cy_http_client_write_header(clientHandle, &request, header, num_header);
 	if(result != CY_RSLT_SUCCESS){
 		printf("HTTP Client Header Write Failed!\n");
 		CY_ASSERT(0);

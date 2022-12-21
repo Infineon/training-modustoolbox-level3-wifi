@@ -66,7 +66,8 @@
 
 // Wi-Fi Headers
 #include "cy_wcm.h"
-#include "cy_lwip.h"
+#include "cy_network_mw_core.h"
+#include "cy_nw_helper.h"
 #include "cy_mqtt_api.h"
 #include "clock.h"
 
@@ -132,6 +133,10 @@ uint8_t *mqtt_network_buffer = NULL;
 // Defined in main.c
 extern bool isConnected;
 extern SemaphoreHandle_t isConnectedSemaphore;
+
+/* Variables to hold string representation of the IP address (dot separated) */
+static char ipAddrString[16];
+static char ipAddrStringV6[39];
 
 /******************************************************************************
 * Function Prototypes
@@ -331,10 +336,12 @@ static cy_rslt_t wifi_connect(void){
 				 */
 				status_flag |= WIFI_CONNECTED;
 				if (ip_address.version == CY_WCM_IP_VER_V4){
-					printf("IPv4 Address Assigned: %s\n\n", ip4addr_ntoa((const ip4_addr_t *) &ip_address.ip.v4));
+                    cy_nw_ntoa((cy_nw_ip_address_t *)&(ip_address), ipAddrString);
+					printf("IPv4 Address Assigned: %s\n\n", ipAddrString);
 				}
 				else if (ip_address.version == CY_WCM_IP_VER_V6){
-					printf("IPv6 Address Assigned: %s\n\n", ip6addr_ntoa((const ip6_addr_t *) &ip_address.ip.v6));
+                    cy_nw_ntoa_ipv6((cy_nw_ip_address_t *)&(ip_address), ipAddrStringV6);
+					printf("IPv6 Address Assigned: %s\n\n", ipAddrStringV6);
 				}
 				return result;
 			}

@@ -318,7 +318,7 @@ cy_rslt_t connect_to_wifi_ap(void)
                     (uint8)(ip_address.ip.v4 >> 24));
 
             cy_wcm_mac_t MAC_addr;
-			cy_wcm_get_mac_addr(CY_WCM_INTERFACE_TYPE_STA, &MAC_addr, 1);
+			cy_wcm_get_mac_addr(CY_WCM_INTERFACE_TYPE_STA, &MAC_addr);
 			mac_checksum = MAC_addr[0] +  MAC_addr[1] +  MAC_addr[2] +  MAC_addr[3] +  MAC_addr[4] +  MAC_addr[5];
             return result;
         }
