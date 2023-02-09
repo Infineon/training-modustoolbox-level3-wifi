@@ -48,7 +48,7 @@ TARGET=CY8CKIT-062S2-43012
 # 
 # If APPNAME is edited, ensure to update or regenerate launch 
 # configurations for your IDE.
-APPNAME=mtb-example-psoc6-empty-app
+APPNAME=key_thermostat
 
 # Name of toolchain to use. Options include:
 #
@@ -87,7 +87,7 @@ VERBOSE=
 # ... then code in directories named COMPONENT_foo and COMPONENT_bar will be
 # added to the build
 #
-COMPONENTS=
+COMPONENTS += FREERTOS LWIP MBEDTLS SECURE_SOCKETS EMWIN_NOSNTS
 
 # Like COMPONENTS, but disable optional code that was enabled by default.
 DISABLE_COMPONENTS=
@@ -100,10 +100,21 @@ SOURCES=
 
 # Like SOURCES, but for include directories. Value should be paths to
 # directories (without a leading -I).
-INCLUDES=
+INCLUDES=./configs
+
+# Custom configuration of mbedtls library.
+MBEDTLSFLAGS = MBEDTLS_USER_CONFIG_FILE='"mbedtls_user_config.h"'
 
 # Add additional defines to the build process (without a leading -D).
-DEFINES=
+DEFINES+=$(MBEDTLSFLAGS) CYBSP_WIFI_CAPABLE CY_RETARGET_IO_CONVERT_LF_TO_CRLF CY_RTOS_AWARE
+
+# CY8CPROTO-062-4343W board shares the same GPIO for the user button (USER BTN1)
+# and the CYW4343W host wake up pin. Since this example uses the GPIO for  
+# interfacing with the user button, the SDIO interrupt to wake up the host is
+# disabled by setting CY_WIFI_HOST_WAKE_SW_FORCE to '0'.
+ifeq ($(TARGET), CY8CPROTO-062-4343W)
+DEFINES+=CY_WIFI_HOST_WAKE_SW_FORCE=0
+endif
 
 # Select softfp or hardfp floating point. Default is softfp.
 VFP_SELECT=
@@ -147,6 +158,8 @@ CY_IGNORE= $(SEARCH_cJSON)/fuzzing $(SEARCH_cJSON)/library_config $(SEARCH_cJSON
 ################################################################################
 # Paths
 ################################################################################
+
+CY_IGNORE+=$(SEARCH_aws-iot-device-sdk-embedded-C)/libraries/standard/coreHTTP
 
 # Relative path to the project directory (default is the Makefile's directory).
 #

@@ -1,6 +1,6 @@
 # ModusToolbox™ Software Training Level 3 – Wi-Fi
 
-This is a 3rd level ModusToolbox™ training class. It covers Wi-Fi using PSoC™ 6 any cloud
+This is a 3rd level ModusToolbox™ training class. It covers Wi-Fi using PSoC™ 6 and a companion Wi-Fi device.
 
 The material and examples explain and demonstrate the use of Wi-Fi, sockets, HTTP, MQTT,
 and low power concepts.
@@ -22,27 +22,37 @@ and low power concepts.
 ## Manual Chapters
 
 This class consists of 9 chapters:
-- Chapter 1: Intro - Overall introduction to this course and PSoC™ 6 AnyCloud
-- Chapter 2: Wi-Fi - Overview of the network stack, Wi-Fi, and mDNS
-- Chapter 3a: Sockets - Introduction to TCP sockets
-- Chapter 3b: Sockets-TLS - Introduction to symmectric/asymmectric encryption and TLS
-- Chapter 4a: Cloud - Introduction to "the cloud". Overview of common application protocols
-- Chapter 4b: Cloud-HTTP - Description of the HTTP protocol and AnyCloud HTTP libraries
-- Chapter 4c: Cloud-MQTT - Description of the MQTT protocol. Interacting with AWS IoT Cloud
-- Chapter 5: Low-Power - Introduction to applying low power concepts to Wi-Fi applications
-- Chapter 6: Project - Apply what you have learned in the class to create an IoT thermostat
+- Chapter 1: Intro - Overall introduction to this course and Wi-Fi using PSoC™ 6 and a companion Wi-Fi device.
+- Chapter 2: Wi-Fi - Overview of the network stack, Wi-Fi, and mDNS.
+- Chapter 3a: Sockets - Introduction to TCP sockets.
+- Chapter 3b: Sockets-TLS - Introduction to symmectric/asymmectric encryption and TLS.
+- Chapter 4a: Cloud - Introduction to "the cloud". Overview of common application protocols.
+- Chapter 4b: Cloud-HTTP - Description of the HTTP protocol and HTTP libraries.
+- Chapter 4c: Cloud-MQTT - Description of the MQTT protocol. Interacting with AWS IoT Cloud.
+- Chapter 5: Low-Power - Introduction to applying low power concepts to Wi-Fi applications.
+- Chapter 6: Project - Apply what you have learned in the class to create an IoT thermostat.
 
 ## Hardware
 
-The following hardware is used for the exercises in this class:
+There are several different kits that may be used in the exercises for this class.
 
+To do exercises in all chapters (except the final project in chapter 6) **one** of the following kits is required:
+
+- CY8CPROTO-062-4343W (PSoC™ 6 Wi-Fi BT Prototyping Kit)
 - CY8CKIT-062S2-43012 (PSoC™ 62S2 Wi-Fi BT Pioneer Kit)
-- CY8CKIT-028-TFT (TFT Display Shield Board)
+
+To do the final project, you must have the CY8CKIT-062S2-43012 kit plus **one** of the following shield boards:
+
+- CY8CKIT-028-SENSE (Shield Board containing sensors, microphones and an OLED display)
+- CY8CKIT-028-TFT (Shield Board containing sensors, a microphone and a TFT display)
+
+An ammeter is required if you want to measure current consumption for the low-power exercises in chapter 5:
+
 - Ammeter (for low power chapter exercises)
 
 ## References
 
 Additional information can be found at:
-- https://www.cypress.com/products/modustoolbox
-- https://www.cypress.com/products/psoc-6-microcontrollers-32-bit-arm-cortex-m4m0
-- https://www.cypress.com/blog/internet-things-iot/introducing-anycloud-flexible-cloud-connected-solution
+- https://www.infineon.com/cms/en/design-support/tools/sdk/modustoolbox-software/
+- https://www.infineon.com/cms/en/product/microcontroller/32-bit-psoc-arm-cortex-microcontroller/psoc-6-32-bit-arm-cortex-m4-mcu
+- https://community.infineon.com/t5/Blogs/bg-p/Blogs/label-name/iot%20blog/page/1

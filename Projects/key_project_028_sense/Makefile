@@ -152,6 +152,8 @@ PREBUILD=
 # Custom post-build commands to run.
 POSTBUILD=
 
+#Ignore unnecessary files from the cJSON library
+CY_IGNORE= $(SEARCH_cJSON)/fuzzing $(SEARCH_cJSON)/library_config $(SEARCH_cJSON)/tests $(SEARCH_cJSON)/test.c
 
 ################################################################################
 # Paths
