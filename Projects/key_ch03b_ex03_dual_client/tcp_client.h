@@ -48,8 +48,8 @@
  * CY_WCM_MAX_SSID_LEN and CY_WCM_MAX_PASSPHRASE_LEN as defined in cy_wcm.h file.
  */
 
-#define WIFI_SSID                         "ssid"
-#define WIFI_PASSWORD                     "pswd"
+#define WIFI_SSID                         "landry_1"
+#define WIFI_PASSWORD                     "8901234567"
 
 /* Security type of the Wi-Fi access point. See 'cy_wcm_security_t' structure
  * in "cy_wcm.h" for more details.
@@ -159,8 +159,7 @@
 * Function Prototype
 ********************************************************************************/
 void tcp_client_task(void *arg);
-void isr_button_press2( void *callback_arg, cyhal_gpio_event_t event);
-void isr_button_press1( void *callback_arg, cyhal_gpio_event_t event);
+void isr_button_press( void *callback_arg, cyhal_gpio_event_t event);
 void connect_to_wifi_ap(void *arg);
 
 #endif /* TCP_CLIENT_H_ */

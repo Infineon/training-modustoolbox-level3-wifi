@@ -108,6 +108,16 @@ MBEDTLSFLAGS = MBEDTLS_USER_CONFIG_FILE='"mbedtls_user_config.h"'
 # Add additional defines to the build process (without a leading -D).
 DEFINES=$(MBEDTLSFLAGS) CYBSP_WIFI_CAPABLE CY_RETARGET_IO_CONVERT_LF_TO_CRLF CY_RTOS_AWARE 
 
+# The CY8CPROTO-062-4343W board shares the same GPIO for the user button (USER BTN1)
+# and the CYW4343W host wake up pin. Since this example uses the GPIO for  
+# interfacing with the user button, the SDIO interrupt to wake up the host is
+# disabled by setting CY_WIFI_HOST_WAKE_SW_FORCE to '0'.
+# 
+# If you wish to enable this host wake up feature, Comment out DEFINES+=CY_WIFI_HOST_WAKE_SW_FORCE=0. 
+# If you want this feature on CY8CPROTO-062-4343W, change the GPIO pin for USER BTN 
+# in design/hardware & Comment out DEFINES+=CY_WIFI_HOST_WAKE_SW_FORCE=0.
+DEFINES+=CY_WIFI_HOST_WAKE_SW_FORCE=0 
+
 # Select softfp or hardfp floating point. Default is softfp.
 VFP_SELECT=
 

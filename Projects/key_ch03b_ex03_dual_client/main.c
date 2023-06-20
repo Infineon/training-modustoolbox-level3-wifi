@@ -91,16 +91,9 @@ bool nonsecurity = false;
 bool security = true;
 
 /* GPIO callback initialization structure */
-cyhal_gpio_callback_data_t cb_data1 =
+cyhal_gpio_callback_data_t cb_data =
 {
-	.callback     = isr_button_press1,
-	.callback_arg = NULL
-};
-
-/* GPIO callback initialization structure */
-cyhal_gpio_callback_data_t cb_data2 =
-{
-	.callback     = isr_button_press2,
+	.callback     = isr_button_press,
 	.callback_arg = NULL
 };
 
@@ -146,15 +139,10 @@ int main(){
 	cyhal_gpio_init(CYBSP_USER_LED, CYHAL_GPIO_DIR_OUTPUT,
 						CYHAL_GPIO_DRIVE_STRONG, CYBSP_LED_STATE_OFF);
 
-	/* Initialize the user button (CYBSP_USER_BTN2) and register interrupt on falling edge. */
-	cyhal_gpio_init(CYBSP_USER_BTN2, CYHAL_GPIO_DIR_INPUT, CYHAL_GPIO_DRIVE_PULLUP, CYBSP_BTN_OFF);
-	cyhal_gpio_register_callback(CYBSP_USER_BTN2, &cb_data2);
-	cyhal_gpio_enable_event(CYBSP_USER_BTN2, CYHAL_GPIO_IRQ_FALL, USER_BTN_INTR_PRIORITY, true);
-
-	/* Initialize the user button (CYBSP_USER_BTN1) and register interrupt on falling edge. */
-	cyhal_gpio_init(CYBSP_USER_BTN1, CYHAL_GPIO_DIR_INPUT, CYHAL_GPIO_DRIVE_PULLUP, CYBSP_BTN_OFF);
-	cyhal_gpio_register_callback(CYBSP_USER_BTN1, &cb_data1);
-	cyhal_gpio_enable_event(CYBSP_USER_BTN1, CYHAL_GPIO_IRQ_FALL, USER_BTN_INTR_PRIORITY, true);
+	/* Initialize the user button (CYBSP_USER_BTN) and register interrupt on falling edge. */
+	cyhal_gpio_init(CYBSP_USER_BTN, CYHAL_GPIO_DIR_INPUT, CYHAL_GPIO_DRIVE_PULLUP, CYBSP_BTN_OFF);
+	cyhal_gpio_register_callback(CYBSP_USER_BTN, &cb_data);
+	cyhal_gpio_enable_event(CYBSP_USER_BTN, CYHAL_GPIO_IRQ_FALL, USER_BTN_INTR_PRIORITY, true);
 
 	/* Initialize secure socket library. */
 	result = cy_socket_init();

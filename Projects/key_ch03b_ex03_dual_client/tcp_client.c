@@ -177,7 +177,7 @@ void tcp_client_task(void *arg){
 			printf("Failed cy_tls_create_identity! Error code: %d\n", (int)result);
 			CY_ASSERT(0);
 		}
-		printf("Press user button 1 to send a secure message!\n");
+		printf("Press user button to send a secure message!\n");
     }
 
     // Non-Secure specific setup
@@ -186,7 +186,7 @@ void tcp_client_task(void *arg){
 		//Non Secure Port
 		tcp_server_address.port = TCP_SERVER_PORT;
 		vTaskDelay(20);
-		printf("Press user button 2 to send a non-secure message!\n");
+		printf("Press user button to send a non-secure message!\n");
 	}
 
 	while(1){
@@ -481,8 +481,9 @@ cy_rslt_t tcp_disconnection_handler(cy_socket_t socket_handle, void *arg){
     return result;
 }
 
+
 /*******************************************************************************
- * Function Name: isr_button_press2
+ * Function Name: isr_button_press
  *******************************************************************************
  *
  * Summary:
@@ -497,49 +498,11 @@ cy_rslt_t tcp_disconnection_handler(cy_socket_t socket_handle, void *arg){
  *  None
  *
  *******************************************************************************/
-void isr_button_press2( void *callback_arg, cyhal_gpio_event_t event){
+void isr_button_press( void *callback_arg, cyhal_gpio_event_t event){
 
     BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 
-    /* Variable to hold the LED ON/OFF command to be sent to the TCP client. */
-    uint32_t led_state_cmd = LED_OFF_CMD;
-
-    /* Set the command to be sent to TCP client. */
-    if(led_state == CYBSP_LED_STATE_ON){
-        led_state_cmd = LED_OFF_CMD;
-        led_state = CYBSP_LED_STATE_OFF;
-    }
-    else{
-        led_state_cmd = LED_ON_CMD;
-        led_state = CYBSP_LED_STATE_ON;
-    }
-
-    /* Set the flag to send command to TCP client. */
-    xTaskNotifyFromISR(client_task_handle, led_state_cmd, eSetValueWithoutOverwrite, &xHigherPriorityTaskWoken);
-
-    /* Force a context switch if xHigherPriorityTaskWoken is now set to pdTRUE. */
-    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
-}
-
-/*******************************************************************************
- * Function Name: isr_button_press1
- *******************************************************************************
- *
- * Summary:
- *  GPIO interrupt service routine. This function detects button presses and
- *  sets the command to be sent to TCP client.
- *
- * Parameters:
- *  void *callback_arg : pointer to the variable passed to the ISR
- *  cyhal_gpio_event_t event : GPIO event type
- *
- * Return:
- *  None
- *
- *******************************************************************************/
-void isr_button_press1( void *callback_arg, cyhal_gpio_event_t event){
-
-    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+    static bool sendSecure = false;
 
     /* Variable to hold the LED ON/OFF command to be sent to the TCP client. */
 	uint32_t led_state_cmd = LED_OFF_CMD;
@@ -555,7 +518,15 @@ void isr_button_press1( void *callback_arg, cyhal_gpio_event_t event){
     }
 
     /* Set the flag to send command to TCP client. */
-    xTaskNotifyFromISR(secure_client_task_handle, led_state_cmd, eSetValueWithoutOverwrite, &xHigherPriorityTaskWoken);
+    /* The messages will alternate between non-secure and secure on each button press */
+    if(sendSecure == false)
+    {
+    	xTaskNotifyFromISR(secure_client_task_handle, led_state_cmd, eSetValueWithoutOverwrite, &xHigherPriorityTaskWoken);
+    	sendSecure = true;
+    } else {
+    	xTaskNotifyFromISR(client_task_handle, led_state_cmd, eSetValueWithoutOverwrite, &xHigherPriorityTaskWoken);
+    	sendSecure = false;
+    }
 
     /* Force a context switch if xHigherPriorityTaskWoken is now set to pdTRUE. */
     portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
