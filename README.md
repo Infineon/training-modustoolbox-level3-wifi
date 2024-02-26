@@ -39,6 +39,7 @@ There are several different kits that may be used in the exercises for this clas
 To do exercises in all chapters (except the final project in chapter 6) **one** of the following kits is required:
 
 - CY8CPROTO-062-4343W (PSoC™ 6 Wi-Fi BT Prototyping Kit)
+- CY8CPROTO-062S2-43439 (PSoC™ 6 Wi-Fi BT Prototyping Kit)
 - CY8CKIT-062S2-43012 (PSoC™ 62S2 Wi-Fi BT Pioneer Kit)
 
 To do the final project, you must have the CY8CKIT-062S2-43012 kit plus **one** of the following shield boards:

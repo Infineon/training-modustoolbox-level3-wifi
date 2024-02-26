@@ -72,29 +72,6 @@
 /*******************************************************************************
 * Macros
 ********************************************************************************/
-#define MAKE_IP_PARAMETERS(a, b, c, d)           ((((uint32_t) d) << 24) | \
-                                                 (((uint32_t) c) << 16) | \
-                                                 (((uint32_t) b) << 8) |\
-                                                 ((uint32_t) a))
-
-/* Wi-Fi Credentials: Modify WIFI_SSID, WIFI_PASSWORD, and WIFI_SECURITY_TYPE
- * to match your Wi-Fi network credentials.
- * Note: Maximum length of the Wi-Fi SSID and password is set to
- * CY_WCM_MAX_SSID_LEN and CY_WCM_MAX_PASSPHRASE_LEN as defined in cy_wcm.h file.
- */
-#define WIFI_SSID                             "SSID"
-#define WIFI_PASSWORD                         "PSSWD"
-
-/* Security type of the Wi-Fi access point. See 'cy_wcm_security_t' structure
- * in "cy_wcm.h" for more details.
- */
-#define WIFI_SECURITY_TYPE                    CY_WCM_SECURITY_WPA2_AES_PSK
-/* Maximum number of connection retries to a Wi-Fi network. */
-#define MAX_WIFI_CONN_RETRIES                 (10u)
-
-/* Wi-Fi re-connection time interval in milliseconds */
-#define WIFI_CONN_RETRY_INTERVAL_MSEC         (1000u)
-
 /* Maximum number of connection retries to the TCP server. */
 #define MAX_TCP_SERVER_CONN_RETRIES               (5u)
 
@@ -113,8 +90,6 @@
 #define ACK_LED_ON                                "LED ON ACK"
 #define ACK_LED_OFF                               "LED OFF ACK"
 #define MSG_INVALID_CMD                    		"Invalid command"
-
-#define TCP_SERVER_PORT                           (27708u)
 
 /* Interrupt priority of the user button. */
 #define USER_BTN_INTR_PRIORITY                    (5)
@@ -255,8 +230,9 @@ void tcp_client_task(void *arg)
 			snprintf(message, sizeof(message), "W%04x050000", mac_checksum);
 		}
 
-		/* Send the command to TCP server. */
-		result = cy_socket_send(client_handle, message, MAX_TCP_DATA_PACKET_LENGTH,
+        // Send the command to the TCP server,
+		/* Send only the string length plus the null termination*/
+		result = cy_socket_send(client_handle, message, strlen(message)+1,
 					   CY_SOCKET_FLAGS_NONE, &bytes_sent);
 		if(result == CY_RSLT_SUCCESS )
 		{

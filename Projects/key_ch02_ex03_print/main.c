@@ -137,8 +137,8 @@ void wifi_connect(void *arg){
     	else
     	{
     		cyhal_gpio_toggle(CYBSP_USER_LED);
-    		vTaskDelay(100);
     	}
+   		vTaskDelay(100);
     }
 }
 
@@ -166,8 +166,8 @@ int main(void)
 	printf("ModusToolbox-Level3-WiFi - 2: Print\n");
 	printf("============================================================\n\n");
 
-    /* Create the MQTT Client task. */
-	xTaskCreate(wifi_connect, "wifi_connect_task", 1024, NULL, 5, NULL);
+    /* Create the WiFi connection task. It must have a priority of 3 or lower. */
+	xTaskCreate(wifi_connect, "wifi_connect_task", 1024, NULL, 1, NULL);
 
 	/* Never Returns */
 	vTaskStartScheduler();

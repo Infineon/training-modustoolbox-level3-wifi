@@ -244,7 +244,8 @@ void tcp_client_task(void *arg)
 		}
 
 		// Send the command to TCP server.
-		result = cy_socket_send(client_handle, message, MAX_TCP_DATA_PACKET_LENGTH,
+		/* Send only the string length plus the null termination*/
+		result = cy_socket_send(client_handle, message, strlen(message)+1,
 					   CY_SOCKET_FLAGS_NONE, &bytes_sent);
 		if(result == CY_RSLT_SUCCESS )
 		{

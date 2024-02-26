@@ -105,7 +105,7 @@ int main(void)
 	/* \x1b[2J\x1b[;H - ANSI ESC sequence to clear screen. */
 	printf("\x1b[2J\x1b[;H");
 	printf("============================================================\n");
-	printf("WiFi 101 - 7B: POST to httpbin.org - Secure\n");
+	printf("WiFi: POST to httpbin.org - Secure\n");
 	printf("============================================================\n\n");
 
 	/* Create the client task. */

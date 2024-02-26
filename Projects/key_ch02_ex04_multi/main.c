@@ -242,11 +242,11 @@ int main(void)
     printf("ModusToolbox-Level3-WiFi - 2: Multi\n");
     printf("============================================================\n\n");
 
-    /* Create the MQTT Client task. */
-	xTaskCreate(wifi_connect, "wifi_connect_task", 1024, NULL, 5, NULL);
+    /* Create the WiFi connection task. It must have a priority of 3 or lower. */
+	xTaskCreate(wifi_connect, "wifi_connect_task", 1024, NULL, 2, NULL);
 
 	/* Create the button watching task. */
-	xTaskCreate(watchButtons, "watch_buttons_task", 1024, NULL, 4, NULL);
+	xTaskCreate(watchButtons, "watch_buttons_task", 1024, NULL, 1, NULL);
 
 	/* Never Returns */
 	vTaskStartScheduler();

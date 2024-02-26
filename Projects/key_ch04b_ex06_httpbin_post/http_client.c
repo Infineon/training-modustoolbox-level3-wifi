@@ -149,16 +149,12 @@ void http_client_task(void *arg){
     request.resource_path = ANYTHINGRESOURCE;
 
     // Create Headers
-    uint32_t num_header = 2;
+    uint32_t num_header = 1;
     cy_http_client_header_t header[num_header];
-    header[0].field = "Host";
-    header[0].field_len = strlen("Host");
-	header[0].value = SERVERHOSTNAME;
-	header[0].value_len = strlen(SERVERHOSTNAME);
-	header[1].field = "Content-Type";
-	header[1].field_len = strlen("Content-Type");
-	header[1].value = "application/json";
-	header[1].value_len = strlen("application/json");
+	header[0].field = "Content-Type";
+	header[0].field_len = strlen("Content-Type");
+	header[0].value = "application/json";
+	header[0].value_len = strlen("application/json");
 	// Content length header is automatically added!
 
 	result = cy_http_client_write_header(clientHandle, &request, header, num_header);
@@ -170,7 +166,7 @@ void http_client_task(void *arg){
 	// Var to hold the servers responses
 	cy_http_client_response_t response;
 
-	// Send get request to /html resource
+	// Send post request to /html resource
 	if(connected){
 		result = cy_http_client_send(clientHandle, &request, (uint8_t *)REQUEST_BODY, REQUEST_BODY_LENGTH, &response);
 		if(result != CY_RSLT_SUCCESS){

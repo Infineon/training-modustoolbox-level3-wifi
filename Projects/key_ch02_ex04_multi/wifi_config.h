@@ -57,8 +57,8 @@
 /* Security type of the Wi-Fi access point. See 'cy_wcm_security_t' structure
  * in "cy_wcm.h" for more details.
  */
-#define WIFI_SECURITY                     CY_WCM_SECURITY_WPA2_AES_PSK
-#define WIFI_SECURITY_ALT                 CY_WCM_SECURITY_WPA2_AES_PSK
+#define WIFI_SECURITY                     CY_WCM_SECURITY_WPA3_WPA2_PSK
+#define WIFI_SECURITY_ALT                 CY_WCM_SECURITY_WPA3_WPA2_PSK
 
 /* Maximum Wi-Fi re-connection limit. */
 #define MAX_WIFI_CONN_RETRIES             (10u)

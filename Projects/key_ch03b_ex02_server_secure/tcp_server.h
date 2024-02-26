@@ -42,6 +42,11 @@
 /*******************************************************************************
 * Macros
 ********************************************************************************/
+#define MAKE_IPV4_ADDRESS(a, b, c, d)           ((((uint32_t) d) << 24) | \
+                                                 (((uint32_t) c) << 16) | \
+                                                 (((uint32_t) b) << 8) |\
+                                                 ((uint32_t) a))
+                                                 
 /* Wi-Fi Credentials: Modify WIFI_SSID, WIFI_PASSWORD, and WIFI_SECURITY_TYPE
  * to match your Wi-Fi network credentials.
  * Note: Maximum length of the Wi-Fi SSID and password is set to
@@ -53,7 +58,7 @@
 /* Security type of the Wi-Fi access point. See 'cy_wcm_security_t' structure
  * in "cy_wcm.h" for more details.
  */
-#define WIFI_SECURITY_TYPE                        CY_WCM_SECURITY_WPA2_AES_PSK
+#define WIFI_SECURITY_TYPE                        CY_WCM_SECURITY_WPA3_WPA2_PSK
 
 /* Maximum number of connection retries to a Wi-Fi network. */
 #define MAX_WIFI_CONN_RETRIES                     (10u)
@@ -62,7 +67,7 @@
 #define WIFI_CONN_RETRY_INTERVAL_MSEC             (1000)
 
 /* TCP server related macros. */
-#define TCP_SERVER_PORT                           (40508)
+#define TCP_SERVER_PORT                           (50008)
 #define TCP_SERVER_MAX_PENDING_CONNECTIONS        (3)
 #define TCP_SERVER_RECV_TIMEOUT_MS                (4000)
 #define MAX_TCP_RECV_BUFFER_SIZE                  (20)

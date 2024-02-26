@@ -41,7 +41,7 @@
 
 /*******************************************************************************
 * Macros
-********************************************************************************/
+********************************************************************************/                                                
 /* Wi-Fi Credentials: Modify WIFI_SSID, WIFI_PASSWORD and WIFI_SECURITY_TYPE
  * to match your Wi-Fi network credentials.
  * Note: Maximum length of the Wi-Fi SSID and password is set to
@@ -54,7 +54,7 @@
 /* Security type of the Wi-Fi access point. See 'cy_wcm_security_t' structure
  * in "cy_wcm.h" for more details.
  */
-#define WIFI_SECURITY_TYPE                 CY_WCM_SECURITY_WPA2_AES_PSK
+#define WIFI_SECURITY_TYPE                 CY_WCM_SECURITY_WPA3_WPA2_PSK
 
 /* Maximum number of connection retries to the Wi-Fi network. */
 #define MAX_WIFI_CONN_RETRIES             (10u)
@@ -70,7 +70,7 @@
 /* Change the server IP address to match the TCP server address (IP address
  * of the PC).
  */
-#define TCP_SERVER_PORT                   40508
+#define TCP_SERVER_PORT                   50008
 
 #define keyCLIENT_CERTIFICATE_PEM \
 "-----BEGIN CERTIFICATE-----\n"\

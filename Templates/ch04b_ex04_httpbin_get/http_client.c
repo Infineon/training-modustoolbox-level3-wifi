@@ -156,15 +156,8 @@ void http_client_task(void *arg){
     request.range_end = -1;
     request.resource_path = HTMLRESOURCE;
 
-    // Create Header
-    cy_http_client_header_t header;
-	uint32_t num_header = 1;
-    // TODO: Populate the header field with "Host" and the header value with the name of the server you're connecting to.
-	//       Use the macro for the server host name for the value entry.
-    //       Don't forget the lengths!
 
-
-	// TODO: Add the function call to write the headers
+	// TODO: Add the function create the HTTP message
 	result = 
 
 	if(result != CY_RSLT_SUCCESS){
@@ -217,14 +210,8 @@ void http_client_task(void *arg){
 	request.range_end = -1;
 	request.resource_path = ANYTHINGRESOURCE;
 
-	// Create Header
-	header.field = "Host";
-	header.field_len = strlen("Host");
-	header.value = SERVERHOSTNAME;
-	header.value_len = strlen(SERVERHOSTNAME);
-	num_header = 1;
-
-	result = cy_http_client_write_header(clientHandle, &request, &header, num_header);
+	// Create the HTTP message by calling cy_http_client_write_header
+	result = cy_http_client_write_header(clientHandle, &request, NULL, 0);
 	if(result != CY_RSLT_SUCCESS){
 		printf("HTTP Client Header Write Failed!\n");
 		CY_ASSERT(0);
