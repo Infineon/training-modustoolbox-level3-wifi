@@ -109,11 +109,11 @@ extern TaskHandle_t client_task_handle;
 uint16_t mac_checksum;
 
 /* TLS credentials of the TCP client. */
-static const char tcp_client_cert[] = keyCLIENT_CERTIFICATE_PEM;
-static const char client_private_key[] = keyCLIENT_PRIVATE_KEY_PEM;
+static const char tcp_client_cert[] = CLIENT_CERTIFICATE_PEM;
+static const char client_private_key[] = CLIENT_PRIVATE_KEY_PEM;
 
 /* Root CA certificate for TCP server identity verification. */
-static const char tcp_server_ca_cert[] = keySERVER_ROOTCA_PEM;
+static const char tcp_server_ca_cert[] = ROOTCA_PEM;
 
 /* Variable to store the TLS identity (certificate and private key).*/
 void *tls_identity;

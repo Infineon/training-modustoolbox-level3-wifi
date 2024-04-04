@@ -131,11 +131,11 @@ void tcp_server_task(void *arg){
 		server_addr.port = SECURE_TCP_SERVER_PORT;
 
 		/* TLS credentials of the TCP server. */
-		static const char tcp_server_cert[] = keySERVER_CERTIFICATE_PEM;
-		static const char server_private_key[] = keySERVER_PRIVATE_KEY_PEM;
+		static const char tcp_server_cert[] = SERVER_CERTIFICATE_PEM;
+		static const char server_private_key[] = SERVER_PRIVATE_KEY_PEM;
 
 		/* Root CA certificate for TCP client identity verification. */
-		static const char tcp_client_ca_cert[] = keyCLIENT_ROOTCA_PEM;
+		static const char tcp_client_ca_cert[] = ROOTCA_PEM;
 
 		/* Create TCP server identity using the SSL certificate and private key. */
 		result = cy_tls_create_identity(tcp_server_cert, strlen(tcp_server_cert), server_private_key, strlen(server_private_key), &tls_identity);

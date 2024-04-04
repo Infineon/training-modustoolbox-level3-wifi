@@ -94,11 +94,11 @@ uint32_t peer_addr_len;
 bool led_state = CYBSP_LED_STATE_OFF;
 
 /* TLS credentials of the TCP server. */
-static const char tcp_server_cert[] = keySERVER_CERTIFICATE_PEM;
-static const char server_private_key[] = keySERVER_PRIVATE_KEY_PEM;
+static const char tcp_server_cert[] = SERVER_CERTIFICATE_PEM;
+static const char server_private_key[] = SERVER_PRIVATE_KEY_PEM;
 
 /* Root CA certificate for TCP client identity verification. */
-static const char tcp_client_ca_cert[] = keyCLIENT_ROOTCA_PEM;
+static const char tcp_client_ca_cert[] = ROOTCA_PEM;
 
 /* Variable to store the TLS identity (certificate and private key).*/
 void *tls_identity;

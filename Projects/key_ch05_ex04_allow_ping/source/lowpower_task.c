@@ -9,7 +9,7 @@
  * Related Document: See Readme.md
  *
 ********************************************************************************
-* Copyright 2020-2022, Cypress Semiconductor Corporation (an Infineon company) or
+* Copyright 2020-2023, Cypress Semiconductor Corporation (an Infineon company) or
 * an affiliate of Cypress Semiconductor Corporation.  All rights reserved.
 *
 * This software, including source code, documentation and related
@@ -56,7 +56,7 @@
 #include "cy_wcm.h"
 
 /* lwIP header files */
-#include <cy_lwip.h>
+#include "cy_network_mw_core.h"
 #include "lwip/netif.h"
 
 /* Low Power Assistant header files. */
@@ -64,7 +64,6 @@
 
 /* Wi-Fi Host Driver (WHD) header files. */
 #include "whd_wifi_api.h"
-
 
 /*******************************************************************************
  * Macros
@@ -83,6 +82,8 @@ TaskHandle_t lowpower_task_handle;
 * Function Prototypes
 *******************************************************************************/
 void print_heap_usage(char *msg);
+cy_rslt_t wlan_powersave_handler(struct netif *wifi, enum wlan_powersave_mode_t mode);
+extern cy_rslt_t cy_wcm_get_whd_interface(cy_wcm_interface_t interface_type, whd_interface_t *whd_iface);
 
 
 /*******************************************************************************
@@ -114,6 +115,7 @@ void lowpower_task(void *arg)
 {
     cy_rslt_t result;
     struct netif *wifi;
+
     cy_wcm_config_t wcm_config = { .interface = CY_WCM_INTERFACE_TYPE_STA };
 
     /* Initializes the Wi-Fi device and lwIP stack.*/
@@ -137,7 +139,8 @@ void lowpower_task(void *arg)
     /* Obtain the pointer to the lwIP network interface. This pointer is used to
      * access the Wi-Fi driver interface to configure the WLAN power-save mode.
      */
-    wifi = cy_lwip_get_interface(CY_LWIP_STA_NW_INTERFACE);
+    wifi = (struct netif*)cy_network_get_nw_interface(CY_NETWORK_WIFI_STA_INTERFACE, 0U);
+    
 
     /* Configure the WLAN device to a power-save mode configured by the macro
      * WLAN_POWERSAVE_MODE
@@ -256,6 +259,14 @@ cy_rslt_t wlan_powersave_handler(struct netif *wifi, enum wlan_powersave_mode_t 
     {
         /* Get the instance of the WLAN interface.*/
         ifp = (whd_interface_t)wifi->state;
+
+        result = cy_wcm_get_whd_interface(CY_WCM_INTERFACE_TYPE_STA, &ifp);
+
+        if (CY_RSLT_SUCCESS != result)
+        {
+            ERR_INFO(("Failed to whd interface.\n"));
+            return result;
+        }  
 
         /* Obtain network parameters configured in the AP.*/
         result = whd_wifi_get_ap_info(ifp, &ap_info, &security_param);
